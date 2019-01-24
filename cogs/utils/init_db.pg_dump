@@ -1,0 +1,238 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.6 (Ubuntu 10.6-0ubuntu0.18.04.1)
+-- Dumped by pg_dump version 10.6 (Ubuntu 10.6-0ubuntu0.18.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: pvm_log; Type: TABLE; Schema: public; Owner: discord
+--
+
+CREATE TABLE public.pvm_log (
+    pvm_id integer NOT NULL,
+    discord_id bigint,
+    points_added integer NOT NULL,
+    moderator bigint,
+    reason text,
+    date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.pvm_log OWNER TO discord;
+
+--
+-- Name: pvm_log_pvm_id_seq; Type: SEQUENCE; Schema: public; Owner: discord
+--
+
+CREATE SEQUENCE public.pvm_log_pvm_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pvm_log_pvm_id_seq OWNER TO discord;
+
+--
+-- Name: pvm_log_pvm_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: discord
+--
+
+ALTER SEQUENCE public.pvm_log_pvm_id_seq OWNED BY public.pvm_log.pvm_id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: discord
+--
+
+CREATE TABLE public.users (
+    discord_id bigint NOT NULL,
+    runescape_name character(12),
+    alt_names character(12)[],
+    pvm_points integer DEFAULT 0,
+    warn_points integer DEFAULT 0
+);
+
+
+ALTER TABLE public.users OWNER TO discord;
+
+--
+-- Name: warn_log; Type: TABLE; Schema: public; Owner: discord
+--
+
+CREATE TABLE public.warn_log (
+    warn_id integer NOT NULL,
+    offender_id bigint,
+    points_added integer NOT NULL,
+    moderator bigint,
+    reason text,
+    date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.warn_log OWNER TO discord;
+
+--
+-- Name: warn_log_warn_id_seq; Type: SEQUENCE; Schema: public; Owner: discord
+--
+
+CREATE SEQUENCE public.warn_log_warn_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.warn_log_warn_id_seq OWNER TO discord;
+
+--
+-- Name: warn_log_warn_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: discord
+--
+
+ALTER SEQUENCE public.warn_log_warn_id_seq OWNED BY public.warn_log.warn_id;
+
+
+--
+-- Name: pvm_log pvm_id; Type: DEFAULT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.pvm_log ALTER COLUMN pvm_id SET DEFAULT nextval('public.pvm_log_pvm_id_seq'::regclass);
+
+
+--
+-- Name: warn_log warn_id; Type: DEFAULT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.warn_log ALTER COLUMN warn_id SET DEFAULT nextval('public.warn_log_warn_id_seq'::regclass);
+
+
+--
+-- Data for Name: pvm_log; Type: TABLE DATA; Schema: public; Owner: discord
+--
+
+COPY public.pvm_log (pvm_id, discord_id, points_added, moderator, reason, date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: discord
+--
+
+COPY public.users (discord_id, runescape_name, alt_names, pvm_points, warn_points) FROM stdin;
+\.
+
+
+--
+-- Data for Name: warn_log; Type: TABLE DATA; Schema: public; Owner: discord
+--
+
+COPY public.warn_log (warn_id, offender_id, points_added, moderator, reason, date) FROM stdin;
+\.
+
+
+--
+-- Name: pvm_log_pvm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: discord
+--
+
+SELECT pg_catalog.setval('public.pvm_log_pvm_id_seq', 1, false);
+
+
+--
+-- Name: warn_log_warn_id_seq; Type: SEQUENCE SET; Schema: public; Owner: discord
+--
+
+SELECT pg_catalog.setval('public.warn_log_warn_id_seq', 1, false);
+
+
+--
+-- Name: pvm_log pvm_log_pkey; Type: CONSTRAINT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.pvm_log
+    ADD CONSTRAINT pvm_log_pkey PRIMARY KEY (pvm_id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (discord_id);
+
+
+--
+-- Name: warn_log warn_log_pkey; Type: CONSTRAINT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.warn_log
+    ADD CONSTRAINT warn_log_pkey PRIMARY KEY (warn_id);
+
+
+--
+-- Name: pvm_log pvm_log_discord_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.pvm_log
+    ADD CONSTRAINT pvm_log_discord_id_fkey FOREIGN KEY (discord_id) REFERENCES public.users(discord_id);
+
+
+--
+-- Name: pvm_log pvm_log_moderator_fkey; Type: FK CONSTRAINT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.pvm_log
+    ADD CONSTRAINT pvm_log_moderator_fkey FOREIGN KEY (moderator) REFERENCES public.users(discord_id);
+
+
+--
+-- Name: warn_log warn_log_moderator_fkey; Type: FK CONSTRAINT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.warn_log
+    ADD CONSTRAINT warn_log_moderator_fkey FOREIGN KEY (moderator) REFERENCES public.users(discord_id);
+
+
+--
+-- Name: warn_log warn_log_offender_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: discord
+--
+
+ALTER TABLE ONLY public.warn_log
+    ADD CONSTRAINT warn_log_offender_id_fkey FOREIGN KEY (offender_id) REFERENCES public.users(discord_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
