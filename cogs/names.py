@@ -76,7 +76,7 @@ class Names:
         for t in targets:
             new_points =  await self.db.add_points(t.id, value, ctx.author.id, reason)
             response = f'{response}{t.display_name} now has {new_points}\n'
-        await ctx.send(response)
+        await ctx.send(f'{response}```')
 
 
 def setup(bot):
