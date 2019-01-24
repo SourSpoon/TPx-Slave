@@ -107,6 +107,8 @@ class Bot(commands.Bot):
             return  # ignore all bots
         if not message.guild:
             return  # ignore all DMs
+        if message.channel.id == 536669576507818013:
+            return
         await self.process_commands(message)
 
 

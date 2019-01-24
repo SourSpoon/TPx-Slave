@@ -1,4 +1,5 @@
 import asyncio
+import re
 
 import discord
 from discord.ext import commands
@@ -24,6 +25,10 @@ class Drops:
         self.database: SQL = bot.database
 
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+        """
+        Using raw reactions because event will not trigger if message is not in cache.
+        Collects the appropriate Objects and fetches message from discord.
+        """
         guild: discord.Guild = self.bot.get_guild(payload.guild_id)
         member: discord.Member = guild.get_member(payload.user_id)
         channel: discord.TextChannel = guild.get_channel(payload.channel_id)
@@ -37,6 +42,10 @@ class Drops:
             return await self.pvm_point_submission(guild, member, channel, message, emoji)
 
     async def pvm_point_submission(self, guild, member, channel, message, emoji: discord.PartialEmoji):
+        """
+        Inserts into database with a PvM point value corresponding with the emoji added
+        Multiple Emoji can be added for strange point values.
+        """
         try:
             points = PVM_POINT_VALUES[emoji.name]
         except KeyError:
@@ -47,7 +56,10 @@ class Drops:
         await self.database.add_points(message.author.id, points, member.id, message.jump_url)
 
     async def on_message(self, message):
-        if message.author.bot:
+        """
+        Filters messages based on channel
+        """
+        if message.author.bot:  # as always ignore bot messages.
             return
         if message.channel.id == 536354503763558411:
             return await self.pvm_drop_submission(message)
@@ -55,12 +67,19 @@ class Drops:
             return await self.rsn_posted(message)
 
     async def pvm_drop_submission(self, message:discord.Message):
+        """
+        Adds Emojis to new posts in the Drop submissions Channel,
+        makes interacting with pvm_point_submission easier
+        """
         for emoji_id in PVM_POINT_EMOJI:
             emoji = self.bot.get_emoji(emoji_id)
             await message.add_reaction(emoji)
 
     async def rsn_posted(self, message: discord.Message):
-        if len(message.content) > 12:
+        """
+        Logs people's RSN in the database
+        """
+        if not re.match(r'[a-zA-Z0-9 _]{3,12}$', message.content):
             await message.delete()
             await message.channel.send(f'{message.content} is an invalid runescape name', delete_after=20)
         else:
@@ -75,6 +94,9 @@ class Drops:
         await message.delete()
 
     async def on_member_join(self, member):
+        """
+        Assigns new Members the Unknown RSN role.
+        """
         if member.guild.id != 484758564485988374:
             return
         unknown_rsn_role = discord.utils.get(member.guild.roles, id=536658901203025941)
