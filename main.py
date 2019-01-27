@@ -10,6 +10,15 @@ from discord.ext import commands
 
 from cogs.utils.postgresql import SQL
 
+ids = {
+    'pvm_drop': 536354503763558411,
+    'rsn_post': 536669576507818013,
+    'events_team': 484776707749052426,
+    'unknown_rsn': 536658901203025941,
+    'tpx_guild': 484758564485988374,
+    'error_channel': 536360055079960577,
+
+}
 
 def config_load():
     with open('cfg/secret.json', 'r', encoding='utf-8') as doc:
@@ -45,11 +54,11 @@ class Bot(commands.Bot):
         self.database = kwargs.pop('database')
         self.start_time = None
         self.app_info = None
-        self.error_channel_id = 536360055079960577
         self.error_channel = None
 
         self.loop.create_task(self.track_start())
         self.loop.create_task(self.load_all_extensions())
+        self.ids = ids
 
     async def track_start(self):
         """
@@ -95,7 +104,7 @@ class Bot(commands.Bot):
               f'Owner: {self.app_info.owner}\n'
               f'Template Maker: SourSpoon / Spoon#7805')
         print('-' * 10)
-        self.error_channel = self.get_channel(536360055079960577)
+        self.error_channel = self.get_channel(self.ids['error_channel'])
 
     async def on_message(self, message):
         """
@@ -107,7 +116,7 @@ class Bot(commands.Bot):
             return  # ignore all bots
         if not message.guild:
             return  # ignore all DMs
-        if message.channel.id == 536669576507818013:
+        if message.channel.id == self.ids['rsn_post']:
             return
         await self.process_commands(message)
 

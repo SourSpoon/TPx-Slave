@@ -23,6 +23,7 @@ class Drops:
     def __init__(self, bot):
         self.bot = bot
         self.database: SQL = bot.database
+        self.ids = self.bot.ids
 
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """
@@ -36,9 +37,9 @@ class Drops:
         emoji: discord.PartialEmoji = payload.emoji
         if member.bot:
             return  # ignore bot reactions
-        if not any(r.id == 484776707749052426 for r in member.roles):
+        if not any(r.id == self.ids['events_team'] for r in member.roles):
             return
-        if payload.channel_id == 536354503763558411:
+        if payload.channel_id == self.ids['pvm_drop']:
             return await self.pvm_point_submission(guild, member, channel, message, emoji)
 
     async def pvm_point_submission(self, guild, member, channel, message, emoji: discord.PartialEmoji):
@@ -61,9 +62,9 @@ class Drops:
         """
         if message.author.bot:  # as always ignore bot messages.
             return
-        if message.channel.id == 536354503763558411:
+        if message.channel.id == self.ids['pvm_drop']:
             return await self.pvm_drop_submission(message)
-        if message.channel.id == 536669576507818013:
+        if message.channel.id == self.ids['rsn_post']:
             return await self.rsn_posted(message)
 
     async def pvm_drop_submission(self, message:discord.Message):
@@ -79,14 +80,14 @@ class Drops:
         """
         Logs people's RSN in the database
         """
-        if not re.match(r'[a-zA-Z0-9 _]{3,12}$', message.content):
+        if not re.match(r'^[a-zA-Z0-9 _]{3,12}$', message.content):
             await message.delete()
             await message.channel.send(f'{message.content} is an invalid runescape name', delete_after=20)
         else:
             await self.database.add_user(message.author.id, message.content)
             await message.author.edit(nick=message.content)
             try:
-                unknown_rsn_role = discord.utils.get(message.guild.roles, id=536658901203025941)
+                unknown_rsn_role = discord.utils.get(message.guild.roles, id=self.ids['unknown_rsn'])
                 await message.author.remove_roles(unknown_rsn_role)
             except discord.HTTPException:
                 await self.bot.error_channel.send(f'cant remove "UNKNOWN RSN" role from "{message.author}"')
@@ -97,9 +98,9 @@ class Drops:
         """
         Assigns new Members the Unknown RSN role.
         """
-        if member.guild.id != 484758564485988374:
+        if member.guild.id != self.ids['tpx_guild']:
             return
-        unknown_rsn_role = discord.utils.get(member.guild.roles, id=536658901203025941)
+        unknown_rsn_role = discord.utils.get(member.guild.roles, id=self.ids['unknown_rsn'])
         await member.add_roles(unknown_rsn_role)
 
 
