@@ -25,7 +25,13 @@ If you create your own copy of this bot you will need to create your own JSON co
 ```
 this should be saved as `/cfg/secrets.json`
 
-Should you want to customise this yourself, it is not currently particularly easy, however I wish to change that in the future. In order to aid your database set up I have used pg_dump to  dump the empty database and included it under utils, this can be used to restore the empty database.
+Should you want to customise this yourself, you will need to know that
+* the dictionary in `main.py` that contains IDs will need to have your own IDs in
+* the list of emoji names and ids in `/cogs/drops.py` will need to have your own ids & emoji names
+* the database uses 32 bit signed ints, so you will get errors saying "integer out of range" if you try to insert values larger than 2.14 billion.
+ You can either use bigints, which increases space used on disk or lose precision by dividing the value by 10/100/1000 ect. It will have to be a whole number.
+
+In order to aid your database set up I have used pg_dump to  dump the empty database and included it under utils, this can be used to restore the empty database.
 (it creates a database called "discord" with a role "discord" as the owner, you may need to create the role first)
 
 As far as running the bot, unless you are on some mega discord server, this should run quite happily with 1 vCore and 1GB of RAM. You could probably get by with 512mb, but I would recommend 1GB.
