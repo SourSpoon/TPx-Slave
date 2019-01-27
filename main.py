@@ -17,8 +17,8 @@ ids = {
     'unknown_rsn': 536658901203025941,
     'tpx_guild': 484758564485988374,
     'error_channel': 536360055079960577,
-
 }
+
 
 def config_load():
     with open('cfg/secret.json', 'r', encoding='utf-8') as doc:
