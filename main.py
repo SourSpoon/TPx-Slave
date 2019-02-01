@@ -116,7 +116,7 @@ class Bot(commands.Bot):
             return  # ignore all bots
         if not message.guild:
             return  # ignore all DMs
-        if message.channel.id == self.ids['rsn_post']:
+        if message.channel.id == self.ids['rsn_post'] or message.channel.id == self.ids['pvm_drop']:
             return
         await self.process_commands(message)
 
