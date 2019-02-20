@@ -61,6 +61,7 @@ async def run():
 
 class Bot(commands.Bot):
     def __init__(self, **kwargs):
+        print('bot started')
         super().__init__(
             command_prefix=self.get_prefix_,
             description=kwargs.pop('description')
@@ -128,6 +129,7 @@ class Bot(commands.Bot):
         If you wish to have multiple event listeners they can be added in other cogs. All on_message listeners should
         always ignore bots.
         """
+        await self.error_channel.send('on message triggered')
         if message.author.bot:
             return  # ignore all bots
         if not message.guild:
