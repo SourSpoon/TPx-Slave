@@ -17,7 +17,21 @@ ids = {
     'unknown_rsn': 536658901203025941,
     'tpx_guild': 484758564485988374,
     'error_channel': 536360055079960577,
+    'test_guild': 290645427995279360
 }
+
+voice_channels = {
+    484758564964007939: 'Grand Exchange',
+    484767499582439445: 'Lumbridge',
+    484783520703709203: 'Falador',
+    486188720060497929: 'Draynor Village',
+    486188766906679320: 'Yanille',
+    517367528800911361: 'Annakarl',
+    484784170254729226: 'Mount Karluum',
+    484783419687960577: 'Goblin Village',
+    484770024121434114: 'NMZ Prods (AFK)',
+}
+
 
 
 def config_load():
@@ -55,10 +69,12 @@ class Bot(commands.Bot):
         self.start_time = None
         self.app_info = None
         self.error_channel = None
+        self.voice_channels = voice_channels
 
         self.loop.create_task(self.track_start())
         self.loop.create_task(self.load_all_extensions())
         self.ids = ids
+        #  self.loop.create_task(self.rename_channels())
 
     async def track_start(self):
         """
@@ -118,7 +134,19 @@ class Bot(commands.Bot):
             return  # ignore all DMs
         if message.channel.id == self.ids['rsn_post'] or message.channel.id == self.ids['pvm_drop']:
             return
+        if message.guild.id != self.ids['tpx_guild'] or message.guild.id != self.ids['test_guild']:
+            return
         await self.process_commands(message)
+
+    async def rename_channels(self):
+        await self.wait_until_ready()
+        while True:
+            for key, value in self.voice_channels.items():
+                channel: discord.VoiceChannel = self.get_channel(key)
+                if channel.name == value:
+                    continue
+                await channel.edit(name=value)
+            await asyncio.sleep(86400)
 
 
 if __name__ == '__main__':
