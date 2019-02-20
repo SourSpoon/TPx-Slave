@@ -137,6 +137,7 @@ class Bot(commands.Bot):
         if message.guild.id != self.ids['tpx_guild'] or message.guild.id != self.ids['test_guild']:
             return
         await self.process_commands(message)
+        await self.error_channel.send('Message Processed')
 
     async def rename_channels(self):
         await self.wait_until_ready()
