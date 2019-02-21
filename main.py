@@ -123,7 +123,7 @@ class Bot(commands.Bot):
         print('-' * 10)
         self.error_channel = self.get_channel(self.ids['error_channel'])
 
-    async def on_message(self, message):
+    async def debug_on_message(self, message):
         """
         This event triggers on every message received by the bot. Including one's that it sent itself.
         If you wish to have multiple event listeners they can be added in other cogs. All on_message listeners should
@@ -144,6 +144,22 @@ class Bot(commands.Bot):
             return
         await self.process_commands(message)
         await self.error_channel.send('Message Processed')
+
+    async def on_message(self, message):
+        """
+        This event triggers on every message received by the bot. Including one's that it sent itself.
+        If you wish to have multiple event listeners they can be added in other cogs. All on_message listeners should
+        always ignore bots.
+        """
+        if message.author.bot:
+            return  # ignore all bots
+        if not message.guild:
+            return  # ignore all DMs
+        if message.channel.id == self.ids['rsn_post'] or message.channel.id == self.ids['pvm_drop']:
+            return
+        if message.guild not in (self.error_channel.guild, self.get_guild(290645427995279360)):
+            return
+        await self.process_commands(message)
 
     async def rename_channels(self):
         await self.wait_until_ready()
