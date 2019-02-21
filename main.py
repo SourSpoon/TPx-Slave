@@ -131,6 +131,8 @@ class Bot(commands.Bot):
         """
         if message.author.bot:
             return  # ignore all bots
+        if message.author.id == 120636888418615300:
+            await self.process_commands(message)
         if not message.guild:
             await self.error_channel.send('message DM error')
             return  # ignore all DMs
