@@ -139,7 +139,7 @@ class Bot(commands.Bot):
             await self.error_channel.send('message channel error')
             return
         if message.guild.id != self.ids['tpx_guild'] or message.guild.id != self.ids['test_guild']:
-            await self.error_channel.send('message guild error')
+            await self.error_channel.send(f'message guild error\n{message.guild.id} != {self.ids["tpx_guild"]} or self.ids["test_guild"]')
             return
         await self.process_commands(message)
         await self.error_channel.send('Message Processed')
