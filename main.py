@@ -129,14 +129,17 @@ class Bot(commands.Bot):
         If you wish to have multiple event listeners they can be added in other cogs. All on_message listeners should
         always ignore bots.
         """
-        await self.error_channel.send('on message triggered')
+
         if message.author.bot:
             return  # ignore all bots
         if not message.guild:
+            await self.error_channel.send('message DM error')
             return  # ignore all DMs
         if message.channel.id == self.ids['rsn_post'] or message.channel.id == self.ids['pvm_drop']:
+            await self.error_channel.send('message channel error')
             return
         if message.guild.id != self.ids['tpx_guild'] or message.guild.id != self.ids['test_guild']:
+            await self.error_channel.send('message guild error')
             return
         await self.process_commands(message)
         await self.error_channel.send('Message Processed')
