@@ -72,8 +72,9 @@ class SQL:
 
     async def get_warn_points(self, discord_id):
         return await self.pool.fetchval("""
-        SELECT warn_points FROM users
-        WHERE discord_id =$1
+        SELECT SUM(points_added)
+        FROM warn_log
+        WHERE offender_id =$1
         """, discord_id)
 
     async def insert_alts(self, discord_id, *alts):
