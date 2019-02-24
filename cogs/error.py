@@ -5,6 +5,15 @@ import discord
 from discord.ext import commands
 
 
+class BadRunescapeName(commands.UserInputError):
+    """
+    Exception raised when a string can not be converted to a Runescape character name:
+    ^[a-zA-Z0-9 _]{3,12}$
+    Runescape names can technically be fewer than 3 characters with a true minimum of one alphanumeric.
+    """
+    pass
+
+
 class ErrorHandler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -36,7 +45,10 @@ class ErrorHandler(commands.Cog):
             commands.CheckFailure: '**You aren\'t allowed to use this command!**',
             commands.TooManyArguments: f'Too many arguments, try wrapping singular arguments in quotes or check ^help {ctx.command}',
             commands.BadArgument: f'Can\'t convert one of your arguments, did you get them in the correct order?, check ^help {ctx.command}',
-            commands.MissingRequiredArgument: f'Missing one (or some) required arguments,check ^help {ctx.command}'
+            commands.MissingRequiredArgument: f'Missing one (or some) required arguments,check ^help {ctx.command}',
+            BadRunescapeName: f'That is not a valid Runescape name, Runescape names must only contain Alphanumeric'
+                                  f' characters and a space, be a maximum of 12 characters long and be at least 3 characters'
+                                  f' if you have a name shorter than 3 characters please contact a mod to verify.'
         }
         try:
             message = handler[type(error)]
