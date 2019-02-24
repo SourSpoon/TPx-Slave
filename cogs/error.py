@@ -5,11 +5,12 @@ import discord
 from discord.ext import commands
 
 
-class ErrorHandler:
+class ErrorHandler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.error_channel = self.bot.error_channel
 
+    @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
 
         if hasattr(ctx.command, 'on_error'):

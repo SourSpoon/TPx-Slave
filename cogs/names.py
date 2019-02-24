@@ -4,7 +4,8 @@ from discord.ext import commands
 from cogs.utils.postgresql import SQL
 from cogs.utils.convert import RSN
 
-class Names:
+
+class Names(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db: SQL = bot.database
@@ -55,7 +56,7 @@ class Names:
         """
         Adds Points To Target
         Target can be a mention, nickname, username or ID. Mentions or IDs are recommended
-        Value is the ammount of points to add, can be a negative number to remove
+        Value is the amount of points to add, can be a negative number to remove
         Locked to Events Team/ Senior Staff/ Co-Leader/ Leader
         """
         if reason is None:
@@ -70,7 +71,7 @@ class Names:
         A tool for adding points to multiple people
         Target can be a mention, nickname, username or ID. Mentions or IDs are recommended
         Reason is a mandatory field, and should be in quotes "like this"
-        Value is the ammount of points to add, can be a negative number to remove
+        Value is the amount of points to add, can be a negative number to remove
         Locked to Events Team/ Senior Staff/ Co-Leader/ Leader
         """
         response = '```\n'

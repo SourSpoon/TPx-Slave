@@ -19,12 +19,13 @@ PVM_POINT_EMOJI = [535616389570887698, 535616389357240321, 535616389705236500,
                    535616389692653578, 535616389436670004, 535616389688328203]
 
 
-class Drops:
+class Drops(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.database: SQL = bot.database
         self.ids = self.bot.ids
 
+    @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """
         Using raw reactions because event will not trigger if message is not in cache.
@@ -56,6 +57,7 @@ class Drops:
             """)
         await self.database.add_points(message.author.id, points, member.id, message.jump_url)
 
+    @commands.Cog.listener()
     async def on_message(self, message):
         """
         Filters messages based on channel
@@ -94,6 +96,7 @@ class Drops:
         await asyncio.sleep(5)
         await message.delete()
 
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         """
         Assigns new Members the Unknown RSN role.

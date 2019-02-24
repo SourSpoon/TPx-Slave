@@ -13,12 +13,12 @@ import inspect
 import asyncio
 
 
-class Owner:
+class Owner(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, bot):
         self.bot = bot
         self._last_result = None
 
-    async def __local_check(self, ctx):
+    async def cog_check(self, ctx):
         return await self.bot.is_owner(ctx.author)
 
     def cleanup_code(self, content):
@@ -30,7 +30,7 @@ class Owner:
         # remove `foo`
         return content.strip('` \n')
 
-    @commands.command(pass_context=True, hidden=True, name='eval')
+    @commands.command(pass_context=True, name='eval')
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
 
@@ -95,7 +95,7 @@ class Owner:
         await ctx.message.add_reaction('\N{SPOON}')
         await self.bot.logout()
 
-    @commands.command(name='load', hidden=True)
+    @commands.command(name='load')
     async def _load(self, ctx, *, cog: str):
         """Loads a module."""
 
@@ -108,7 +108,7 @@ class Owner:
         else:
             await ctx.send('\N{OK HAND SIGN}')
 
-    @commands.command(name='reload', hidden=True)
+    @commands.command(name='reload')
     async def _reload(self, ctx, *, cog: str):
         """Reloads a module."""
 
@@ -122,7 +122,7 @@ class Owner:
         else:
             await ctx.send('\N{OK HAND SIGN}')
 
-    @commands.command(name='unload', hidden=True)
+    @commands.command(name='unload')
     async def _unload(self, ctx, *, cog: str):
         """Unloads a module."""
 
