@@ -22,6 +22,7 @@ class Names(commands.Cog):
         unverified_role = discord.utils.get(ctx.guild.roles, id=self.ids['unknown_rsn'])
         if unverified_role in ctx.author.roles:
             await ctx.author.remove_roles(unverified_role)
+        await ctx.message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
 
     @commands.command()
     @commands.has_any_role('Events Team', 'Senior Staff', 'Co-Leader', 'Leader')
@@ -37,6 +38,7 @@ class Names(commands.Cog):
         await target.remove_roles(unverified_role)
         if unverified_role in target.roles:
             await target.remove_roles(unverified_role)
+        await ctx.message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
 
     @commands.group(invoke_without_command=True)
     async def points(self, ctx, target: discord.Member = None):
