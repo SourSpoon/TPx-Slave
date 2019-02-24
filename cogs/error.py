@@ -24,7 +24,7 @@ class ErrorHandler(commands.Cog):
 
         error = getattr(error, 'original', error)
 
-        ignored = (commands.CommandNotFound, commands.UserInputError, commands.MissingPermissions)
+        ignored = (commands.CommandNotFound, commands.MissingPermissions)
 
         if isinstance(error, ignored):
             return
@@ -33,7 +33,10 @@ class ErrorHandler(commands.Cog):
             discord.Forbidden: '**I do not have the required permissions to run this command.**',
             commands.DisabledCommand: f'{ctx.command} has been disabled.',
             commands.NoPrivateMessage: f'{ctx.command} can not be used in Private Messages.',
-            commands.CheckFailure: '**You aren\'t allowed to use this command!**'
+            commands.CheckFailure: '**You aren\'t allowed to use this command!**',
+            commands.TooManyArguments: f'Too many arguments, try wrapping singular arguments in quotes or check ^help {ctx.command}',
+            commands.BadArgument: f'Can\'t convert one of your arguments, did you get them in the correct order?, check ^help {ctx.command}',
+            commands.MissingRequiredArgument: f'Missing one (or some) required arguments,check ^help {ctx.command}'
         }
         try:
             message = handler[type(error)]
