@@ -25,8 +25,12 @@ class Warn(commands.Cog):
         return bool(discord.utils.get(ctx.author.roles, id=self.bot.ids['events_team']))
 
     @commands.command()
-    async def warn(self, ctx, target: discord.Member, severity:int, *, reason):
+    async def warn(self, ctx, target: discord.Member, severity: int, *, reason):
         """
+        Target can be a mention, nickname, username or ID. Mentions or IDs are recommended
+        Reason is a mandatory field, and should be in quotes "like this"
+        Severity is a mandatory field and should be a number between 1 and 3, 3 being more severe
+        Locked to Events Team/ Senior Staff/ Co-Leader/ Leader
         """
         if not 1 <= severity <= 3:
             return await ctx.send('Severity must be between 1 and 3')
