@@ -56,6 +56,7 @@ class Drops(commands.Cog):
             message: {message.jump_url}
             """)
         await self.database.add_points(message.author.id, points, member.id, message.jump_url)
+        await message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
 
     @commands.Cog.listener()
     async def on_message(self, message):
