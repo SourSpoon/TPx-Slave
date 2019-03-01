@@ -50,7 +50,7 @@ class Names(commands.Cog):
         if target is None:
             target = ctx.author
         points = await self.db.get_pvm_points(target.id)
-        await ctx.send(f'{target.display_name} has {points} pvm points')
+        await ctx.send('{0} now has {1:,} PvM Points'.format(target.display_name, points))
 
     @points.command(name='add')
     @commands.has_any_role('Events Team', 'Senior Staff', 'Co-Leader', 'Leader')
@@ -64,7 +64,7 @@ class Names(commands.Cog):
         if reason is None:
             reason = ctx.message.jump_url
         new_points = await self.db.add_points(target.id, value, ctx.author.id, reason)
-        await ctx.send(f'{target.display_name} now has {new_points} PvM Points')
+        await ctx.send('{0} now has {1:,} PvM Points'.format(target.display_name, new_points))
 
     @commands.command()
     @commands.has_any_role('Events Team', 'Senior Staff', 'Co-Leader', 'Leader')
@@ -78,8 +78,8 @@ class Names(commands.Cog):
         """
         response = '```\n'
         for t in targets:
-            new_points =  await self.db.add_points(t.id, value, ctx.author.id, reason)
-            response = f'{response}{t.display_name} now has {new_points}\n'
+            new_points = await self.db.add_points(t.id, value, ctx.author.id, reason)
+            response = '{0}{1} now has {2:,}\n'.format(response, t.display_name, new_points)
         await ctx.send(f'{response}```')
 
 
