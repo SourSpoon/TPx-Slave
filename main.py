@@ -18,7 +18,8 @@ ids = {
     'tpx_guild': 484758564485988374,
     'error_channel': 536360055079960577,
     'test_guild': 290645427995279360,
-    'warns_channel': 484783283985580053
+    'warns_channel': 484783283985580053,
+    'left_channel': 551846384899457026
 }
 
 voice_channels = {

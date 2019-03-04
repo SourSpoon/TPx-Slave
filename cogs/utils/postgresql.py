@@ -85,4 +85,11 @@ class SQL:
         RETURNING alt_names;
         """, alts, discord_id)
 
+    async def get_rsn(self, discord_id):
+        return await self.pool.fetchval("""
+        SELECT discord_id
+        FROM users
+        WHERE discord_id = $1;
+        """, discord_id)
+
 

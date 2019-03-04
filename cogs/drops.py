@@ -107,6 +107,14 @@ class Drops(commands.Cog):
         unknown_rsn_role = discord.utils.get(member.guild.roles, id=self.ids['unknown_rsn'])
         await member.add_roles(unknown_rsn_role)
 
+    @commands.Cog.listener()
+    async def on_member_leave(self, member):
+        if discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
+            return  # ignore people who aren't committed/ in the cc
+        ch = member.guild.get_channel(self.bot.ids['left_channel'])
+        rsn = self.database.get_rsn(member.id)
+        await ch.send(f'```\n{member} has left\nRSN: {rsn}```')
+
 
 def setup(bot):
     bot.add_cog(Drops(bot))
