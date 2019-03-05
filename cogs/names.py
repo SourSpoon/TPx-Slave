@@ -54,7 +54,7 @@ class Names(commands.Cog):
 
     @points.command(name='add')
     @commands.has_any_role('Events Team', 'Senior Staff', 'Co-Leader', 'Leader')
-    async def points_add(self, ctx, target:discord.Member, value:int, *, reason=None):
+    async def points_add(self, ctx, target: discord.Member, value: int, *, reason=None):
         """
         Adds Points To Target
         Target can be a mention, nickname, username or ID. Mentions or IDs are recommended
@@ -65,11 +65,11 @@ class Names(commands.Cog):
             reason = ctx.message.jump_url
         new_points = await self.db.add_points(target.id, value, ctx.author.id, reason)
         await ctx.send('{0} now has {1:,} PvM Points'.format(target.display_name, new_points))
-        await self.bot.dispatch("pvm_points_update", new_points, value, target.id, ctx.message.author.id)
+        self.bot.dispatch("pvm_points_update", new_points, value, target.id, ctx.message.author.id)
 
     @commands.command()
     @commands.has_any_role('Events Team', 'Senior Staff', 'Co-Leader', 'Leader')
-    async def bulk_add(self, ctx, value:int, reason, *targets:discord.Member):
+    async def bulk_add(self, ctx, value:int, reason, *targets: discord.Member):
         """
         A tool for adding points to multiple people
         Target can be a mention, nickname, username or ID. Mentions or IDs are recommended
