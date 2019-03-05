@@ -57,7 +57,7 @@ class Drops(commands.Cog):
             """)
         new_points = await self.database.add_points(message.author.id, points, member.id, message.jump_url)
         await message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-        await self.bot.dispatch("pvm_points_update", new_points, points, member.id, message.author.id)
+        self.bot.dispatch("pvm_points_update", new_points, points, member.id, message.author.id)
 
     @commands.Cog.listener()
     async def on_message(self, message):
