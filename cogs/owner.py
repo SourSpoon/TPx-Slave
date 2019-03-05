@@ -90,7 +90,7 @@ class Owner(commands.Cog, command_attrs=dict(hidden=True)):
         winner = random.choice(users)
         await ctx.send(f'{winner.mention} has been picked')
 
-    @commands.command()
+    @commands.command(aliases=['logoff', 'reboot', 'shutdown'])
     async def logout(self, ctx):
         await ctx.message.add_reaction('\N{SPOON}')
         await self.bot.logout()
