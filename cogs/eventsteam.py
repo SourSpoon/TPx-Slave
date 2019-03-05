@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 import random
 
@@ -32,6 +33,7 @@ class EventsTeam(commands.Cog):
         This will only ever give 15 points for event attendance.
         """
         successful = ''
+        dict_success = {}
         failed = ''
         date = datetime.datetime.utcnow()
         date_string = date.strftime('%Y - %m - %d')
@@ -44,10 +46,13 @@ class EventsTeam(commands.Cog):
                 new_points = await self.database.add_points(m.id, 15, ctx.author.id, f'Event hosted by {str(ctx.author)}'
                                                             f' on {date_string}')
                 successful = f'{successful}\n{m.display_name}'
-                self.bot.dispatch("pvm_points_update", new_points, 15, m.id, ctx.message.author.id)
+                dict_success[m.id] = (new_points, 15, m.id, ctx.message.author.id)
             except Exception:
                 failed = f'{failed}\n{m.display_name}'
         await ctx.send(f'Successful:\n```{successful}`` Failed:\n```{failed}```')
+        for i in dict_success.values():
+            self.bot.dispatch("pvm_points_update", *i)
+            await asyncio.sleep(2)
 
 
 def setup(bot):
