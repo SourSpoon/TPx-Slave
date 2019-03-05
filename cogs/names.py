@@ -65,6 +65,7 @@ class Names(commands.Cog):
             reason = ctx.message.jump_url
         new_points = await self.db.add_points(target.id, value, ctx.author.id, reason)
         await ctx.send('{0} now has {1:,} PvM Points'.format(target.display_name, new_points))
+        await self.bot.dispatch("pvm_points_update", new_points, value, target.id, ctx.message.author.id)
 
     @commands.command()
     @commands.has_any_role('Events Team', 'Senior Staff', 'Co-Leader', 'Leader')
@@ -80,6 +81,7 @@ class Names(commands.Cog):
         for t in targets:
             new_points = await self.db.add_points(t.id, value, ctx.author.id, reason)
             response = '{0}{1} now has {2:,}\n'.format(response, t.display_name, new_points)
+            await self.bot.dispatch("pvm_points_update", new_points, value, t.id, ctx.message.author.id)
         await ctx.send(f'{response}```')
 
 

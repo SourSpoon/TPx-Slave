@@ -55,8 +55,9 @@ class Drops(commands.Cog):
             KEY ERROR WHEN GIVING PVM POINTS TO PLAYER
             message: {message.jump_url}
             """)
-        await self.database.add_points(message.author.id, points, member.id, message.jump_url)
+        new_points = await self.database.add_points(message.author.id, points, member.id, message.jump_url)
         await message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+        await self.bot.dispatch("pvm_points_update", new_points, points, member.id, message.author.id)
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -114,6 +115,18 @@ class Drops(commands.Cog):
         ch = member.guild.get_channel(self.bot.ids['left_channel'])
         rsn = self.database.get_rsn(member.id)
         await ch.send(f'```\n{member} has left\nRSN: {rsn}```')
+
+    @commands.Cog.listener()
+    async def on_pvm_points_update(self, current, added, target, moderator):
+        tpx: discord.Guild = self.bot.get_guild(self.bot.ids['tpx_guild'])
+        channel: discord.TextChannel = tpx.get_channel(self.bot.ids['pvm_log_channel'])
+        mod = tpx.get_member(moderator)
+        member = tpx.get_member(target)
+        em = discord.Embed(description=f'```\n{member} ({member.display_name}) was credited with {added} pvm points```')
+        em.add_field(name='Moderator', value=f'{mod}')
+        em.add_field(name='Total Points', value=f'{current}')
+        await channel.send(embed=em)
+
 
 
 def setup(bot):

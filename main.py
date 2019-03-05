@@ -19,7 +19,8 @@ ids = {
     'error_channel': 536360055079960577,
     'test_guild': 290645427995279360,
     'warns_channel': 484783283985580053,
-    'left_channel': 551846384899457026
+    'left_channel': 551846384899457026,
+    'pvm_log_channel': 552301404350316575
 }
 
 voice_channels = {

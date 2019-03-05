@@ -41,9 +41,10 @@ class EventsTeam(commands.Cog):
             return await ctx.send('Please either specify a channel or join one')
         for m in channel.members:
             try:
-                await self.database.add_points(m.id, 15, ctx.author.id, f'Event hosted by {str(ctx.author)}, '
-                                                                        f'on {date_string}')
+                new_points = await self.database.add_points(m.id, 15, ctx.author.id, f'Event hosted by {str(ctx.author)}'
+                                                            f' on {date_string}')
                 successful = f'{successful}\n{m.display_name}'
+                await self.bot.dispatch("pvm_points_update", new_points, 15, m.id, ctx.message.author.id)
             except Exception:
                 failed = f'{failed}\n{m.display_name}'
         await ctx.send(f'Successful:\n```{successful}`` Failed:\n```{failed}```')
