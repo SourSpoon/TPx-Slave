@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 from discord.ext import commands
 
@@ -78,11 +80,15 @@ class Names(commands.Cog):
         Locked to Events Team/ Senior Staff/ Co-Leader/ Leader
         """
         response = '```\n'
+        done = {}
         for t in targets:
             new_points = await self.db.add_points(t.id, value, ctx.author.id, reason)
             response = '{0}{1} now has {2:,}\n'.format(response, t.display_name, new_points)
-            self.bot.dispatch("pvm_points_update", new_points, value, t.id, ctx.message.author.id)
+            done[t.id] = (new_points, value, t.id, ctx.message.author.id)
         await ctx.send(f'{response}```')
+        for i in done.values():
+            self.bot.dispatch("pvm_points_u", *i)
+            await asyncio.sleep(2)  # aid with bot responsiveness/ avoid ratelimits
 
 
 def setup(bot):
