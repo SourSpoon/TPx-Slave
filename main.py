@@ -78,7 +78,7 @@ class Bot(commands.Bot):
         self.loop.create_task(self.track_start())
         self.loop.create_task(self.load_all_extensions())
         self.ids = ids
-        #  self.loop.create_task(self.rename_channels())
+        self.loop.create_task(self.rename_channels())
 
     async def track_start(self):
         """
