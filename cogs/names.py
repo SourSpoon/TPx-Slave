@@ -43,7 +43,7 @@ class Names(commands.Cog):
         await ctx.message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
 
     @commands.group(invoke_without_command=True)
-    async def points(self, ctx, target: discord.Member = None):
+    async def points(self, ctx, *, target: discord.Member = None):
         """
         Used to check someone's PvM points.
         Target is an optional value, if none is provided it will check the message author's points
