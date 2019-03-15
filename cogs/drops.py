@@ -109,7 +109,7 @@ class Drops(commands.Cog):
         await member.add_roles(unknown_rsn_role)
 
     @commands.Cog.listener()
-    async def on_member_leave(self, member):
+    async def on_member_remove(self, member):
         ch = member.guild.get_channel(self.bot.ids['left_channel'])
         if discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
             await ch.send(f'exited early for {member}')
