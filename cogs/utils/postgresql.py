@@ -87,7 +87,7 @@ class SQL:
 
     async def get_rsn(self, discord_id):
         return await self.pool.fetchval("""
-        SELECT discord_id
+        SELECT runescape_name
         FROM users
         WHERE discord_id = $1;
         """, discord_id)
