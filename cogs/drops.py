@@ -110,7 +110,7 @@ class Drops(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_leave(self, member):
-        if discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
+        if not discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
             return  # ignore people who aren't committed/ in the cc
         ch = member.guild.get_channel(self.bot.ids['left_channel'])
         rsn = self.database.get_rsn(member.id)
