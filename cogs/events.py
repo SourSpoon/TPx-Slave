@@ -19,7 +19,11 @@ PVM_POINT_EMOJI = [535616389570887698, 535616389357240321, 535616389705236500,
                    535616389692653578, 535616389436670004, 535616389688328203]
 
 
-class Drops(commands.Cog):
+class Events(commands.Cog):
+    """
+    This cog will provide commands solely based on listening for events.
+    No Direct Chat commands will be provided.
+    """
     def __init__(self, bot):
         self.bot = bot
         self.database: SQL = bot.database
@@ -131,6 +135,5 @@ class Drops(commands.Cog):
         await channel.send(embed=em)
 
 
-
 def setup(bot):
-    bot.add_cog(Drops(bot))
+    bot.add_cog(Events(bot))

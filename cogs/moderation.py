@@ -16,7 +16,7 @@ def warning_embed_builder(ctx, target, severity, reason, messaged_user):
     return embed
 
 
-class Warn(commands.Cog):
+class Mod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.database = bot.database
@@ -52,4 +52,4 @@ class Warn(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Warn(bot))
+    bot.add_cog(Mod(bot))
