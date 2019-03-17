@@ -112,10 +112,12 @@ class Drops(commands.Cog):
     async def on_member_remove(self, member):
         ch = member.guild.get_channel(self.bot.ids['left_channel'])
         if discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
-            await ch.send(f'exited early for {member}')
+            #  await ch.send(f'exited early for {member}') debug statement
             return  # ignore people who aren't committed/ in the cc
-        rsn = await self.database.get_rsn(member.id)
-        await ch.send(f'```\n{member} has left\nRSN: {rsn}```')
+        user = await self.database.get_user(member.id)
+        rsn = user['rsn']
+        points = user['points']
+        await ch.send(f'```\n{member}, ({member.id}) has left\nRSN: {rsn}\nPVM Points: {points}```')
 
     @commands.Cog.listener()
     async def on_pvm_points_update(self, current, added, target, moderator):
