@@ -124,7 +124,7 @@ class Events(commands.Cog):
         await ch.send('record retrieved')
         rsn = user['rsn']
         points = user['points']
-        await ch.send(f'```\n{member}, ({member.id}) has left\nRSN: {rsn}\nPVM Points: {points}```')
+        await ch.send(f'```\n{user}\n```')
 
     @commands.Cog.listener()
     async def on_pvm_points_update(self, current, added, target, moderator):
