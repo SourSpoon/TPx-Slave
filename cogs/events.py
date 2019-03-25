@@ -118,9 +118,10 @@ class Events(commands.Cog):
         await ch.send(f'{member} left - {member.id}')
         if discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
             return  # ignore people who aren't committed/ in the cc
-        await ch.send(f'getting record')
         user = await self.database.get_user(member.id)
-        await ch.send(f'```\n{user}\n```')
+        rsn = user['runescape_name']
+        points = user['pvm_points']
+        await ch.send(f'```\n{rsn}: {points}\n```')
 
     @commands.Cog.listener()
     async def on_pvm_points_update(self, current, added, target, moderator):
