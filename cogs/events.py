@@ -115,15 +115,11 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         ch = member.guild.get_channel(self.bot.ids['left_channel'])
-        await ch.send(f'debugging remove, {member} left')
+        await ch.send(f'{member} left - {member.id}')
         if discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
-            await ch.send(f'exited early for {member}')
             return  # ignore people who aren't committed/ in the cc
         await ch.send(f'getting record')
         user = await self.database.get_user(member.id)
-        await ch.send('record retrieved')
-        rsn = user['rsn']
-        points = user['points']
         await ch.send(f'```\n{user}\n```')
 
     @commands.Cog.listener()
