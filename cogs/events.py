@@ -38,7 +38,7 @@ class Events(commands.Cog):
         guild: discord.Guild = self.bot.get_guild(payload.guild_id)
         member: discord.Member = guild.get_member(payload.user_id)
         channel: discord.TextChannel = guild.get_channel(payload.channel_id)
-        message: discord.Message = await channel.get_message(payload.message_id)
+        message: discord.Message = await channel.fetch_message(payload.message_id)
         emoji: discord.PartialEmoji = payload.emoji
         if member.bot:
             return  # ignore bot reactions
@@ -116,7 +116,7 @@ class Events(commands.Cog):
     async def on_member_remove(self, member):
         ch = member.guild.get_channel(self.bot.ids['left_channel'])
         if discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
-            #  await ch.send(f'exited early for {member}') debug statement
+            await ch.send(f'exited early for {member}')
             return  # ignore people who aren't committed/ in the cc
         user = await self.database.get_user(member.id)
         rsn = user['rsn']

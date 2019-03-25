@@ -108,7 +108,7 @@ class Bot(commands.Bot):
             try:
                 self.load_extension(f'cogs.{extension}')
                 print(f'loaded {extension}')
-            except Exception as e:
+            except commands.ExtensionError as e:
                 error = f'{extension}\n {type(e).__name__} : {e}'
                 print(f'failed to load extension {error}')
             print('-' * 10)

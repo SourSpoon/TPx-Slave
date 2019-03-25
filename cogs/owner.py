@@ -79,7 +79,7 @@ class Owner(commands.Cog, command_attrs=dict(hidden=True)):
 
     @commands.command()
     async def pick_winner(self, ctx, channel: discord.TextChannel, message_id: int, emoji: discord.Emoji):
-        message = await channel.get_message(message_id)
+        message = await channel.fetch_message(message_id)
         for r in message.reactions:
             if r.emoji == emoji:
                 reaction = r
@@ -102,7 +102,7 @@ class Owner(commands.Cog, command_attrs=dict(hidden=True)):
         cog = f'cogs.{cog.lower()}'
         try:
             self.bot.load_extension(cog)
-        except Exception as e:
+        except commands.ExtensionError as e:
             await ctx.send('\N{PISTOL}')
             await ctx.send(f'{type(e).__name__}: {e}')
         else:
@@ -116,7 +116,7 @@ class Owner(commands.Cog, command_attrs=dict(hidden=True)):
         try:
             self.bot.unload_extension(cog)
             self.bot.load_extension(cog)
-        except Exception as e:
+        except commands.ExtensionError as e:
             await ctx.send('\N{PISTOL}')
             await ctx.send(f'{type(e).__name__}: {e}')
         else:
@@ -129,7 +129,7 @@ class Owner(commands.Cog, command_attrs=dict(hidden=True)):
         cog = f'cogs.{cog.lower()}'
         try:
             self.bot.unload_extension(cog)
-        except Exception as e:
+        except commands.ExtensionError as e:
             await ctx.send('\N{PISTOL}')
             await ctx.send(f'{type(e).__name__}: {e}')
         else:
