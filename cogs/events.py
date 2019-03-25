@@ -119,7 +119,9 @@ class Events(commands.Cog):
         if discord.utils.get(member.roles, id=self.bot.ids['unknown_rsn']):
             await ch.send(f'exited early for {member}')
             return  # ignore people who aren't committed/ in the cc
+        await ch.send(f'getting record')
         user = await self.database.get_user(member.id)
+        await ch.send('record retrieved')
         rsn = user['rsn']
         points = user['points']
         await ch.send(f'```\n{member}, ({member.id}) has left\nRSN: {rsn}\nPVM Points: {points}```')

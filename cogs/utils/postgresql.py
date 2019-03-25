@@ -86,10 +86,11 @@ class SQL:
         """, alts, discord_id)
 
     async def get_user(self, discord_id):
-        return await self.pool.fetchrow("""
+        record: asyncpg.Record = await self.pool.fetchrow("""
         SELECT *
         FROM users
         WHERE discord_id = $1;
         """, discord_id)
+        return dict(record)
 
 
