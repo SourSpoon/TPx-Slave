@@ -74,12 +74,6 @@ class Events(commands.Cog):
             return await self.pvm_drop_submission(message)
         if message.channel.id == self.ids['rsn_post']:
             return await self.rsn_posted(message)
-        if message.channel.category_id == 484758564964007936 or message.channel.category_id == 536354318874312705:
-            await self.april(message)
-
-    async def april(self, m):
-        if re.search(r'[a-zA-Z0-9]', m.content):
-            await m.delete()
 
     async def pvm_drop_submission(self, message:discord.Message):
         """
@@ -139,7 +133,6 @@ class Events(commands.Cog):
         em.add_field(name='Moderator', value=f'{mod}')
         em.add_field(name='Total Points', value=f'{current}')
         await channel.send(embed=em)
-
 
 
 def setup(bot):
