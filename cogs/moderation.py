@@ -20,9 +20,10 @@ class Mod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.database = bot.database
+        self.staff_roles = (bot.ids['events_team'], bot.ids['admin_team'])
 
     async def cog_check(self, ctx):
-        return bool(discord.utils.get(ctx.author.roles, id=self.bot.ids['events_team']))
+        return any(role.id in self.staff_roles for role in ctx.author.roles)
 
     @commands.command()
     async def warn(self, ctx, target: discord.Member, severity: int, *, reason):

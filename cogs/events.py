@@ -28,6 +28,7 @@ class Events(commands.Cog):
         self.bot = bot
         self.database: SQL = bot.database
         self.ids = self.bot.ids
+        self.staff_roles = (bot.ids['events_team'], bot.ids['admin_team'])
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
@@ -42,7 +43,7 @@ class Events(commands.Cog):
         emoji: discord.PartialEmoji = payload.emoji
         if member.bot:
             return  # ignore bot reactions
-        if not any(r.id == self.ids['events_team'] for r in member.roles):
+        if not any(role.id in self.staff_roles for role in member.roles):
             return
         if payload.channel_id == self.ids['pvm_drop']:
             return await self.pvm_point_submission(guild, member, channel, message, emoji)
