@@ -163,7 +163,7 @@ class Bot(commands.Bot):
             return  # ignore all DMs
         if message.channel.id == self.ids['rsn_post'] or message.channel.id == self.ids['pvm_drop']:
             return
-        if message.guild not in (self.error_channel.guild, self.get_guild(290645427995279360)):
+        if message.guild not in (self.tpx, self.get_guild(290645427995279360)):
             return
         await self.process_commands(message)
 
