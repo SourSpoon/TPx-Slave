@@ -74,6 +74,7 @@ class Bot(commands.Bot):
         self.start_time = None
         self.app_info = None
         self.error_channel = None
+        self.tpx = None
         self.voice_channels = voice_channels
 
         self.loop.create_task(self.track_start())
@@ -126,6 +127,7 @@ class Bot(commands.Bot):
               f'Template Maker: SourSpoon / Spoon#7805')
         print('-' * 10)
         self.error_channel = self.get_channel(self.ids['error_channel'])
+        self.tpx = self.get_guild(self.ids['tpx_guild'])
 
     async def debug_on_message(self, message):
         """
