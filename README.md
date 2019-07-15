@@ -4,9 +4,9 @@ This bot was largely written in a short amount of time, using my own [template](
 Requirements:
 Python 3.6
 PostgreSQL 10
-Discord\.py Rewrite [Source](https://github.com/Rapptz/discord.py/tree/rewrite) [Docs](https://discordpy.readthedocs.io/en/rewrite/)
+Discord\.py [Source](https://github.com/Rapptz/discord.py) [Docs](https://discordpy.readthedocs.io/en/latest/index.html) (tested on v1.1)
 
-It also uses Async PG [Source](https://github.com/MagicStack/asyncpg) [Docs](https://magicstack.github.io/asyncpg/current/)
+It also uses Async PG [Source](https://github.com/MagicStack/asyncpg) [Docs](https://magicstack.github.io/asyncpg/current/) (tested on v0.18.3)
 
 And while this has been tested on PSQL v10 and Ubuntu 18.04 with python 3.6 I don't see why you couldnt use python 3.7 or PSQL 11
 
@@ -23,7 +23,7 @@ If you create your own copy of this bot you will need to create your own JSON co
 	}
 }
 ```
-this should be saved as `/cfg/secrets.json`
+this should be saved as `cfg/secrets.json`
 
 Should you want to customise this yourself, you will need to know that
 * the dictionary in `main.py` that contains IDs will need to have your own IDs in
